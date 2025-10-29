@@ -1,4 +1,6 @@
 Flask
 Flask-Cors
-requests
+transformers
+torch
+scipy
 gunicorn

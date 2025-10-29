@@ -1,23 +1,24 @@
 from flask import Flask, request, jsonify
-import requests
+from flask_cors import CORS
+from review.sentiment import polarity_scores, stars
 
 app = Flask(__name__)
+CORS(app)
 
-PREPROCESS_URL = "http://preprocess-service:5002/preprocess"
-SENTIMENT_URL = "http://sentiment-service:5001/predict"
+@app.get("/health")
+def health():
+    return jsonify({"status": "ok"}), 200
 
-@app.route("/analyze", methods=["POST"])
-def analyze():
-    data = request.get_json()
-    text = data.get("text", "")
+@app.post("/api/review")
+def review():
+    data = request.get_json(silent=True) or {}
+    text = (data.get("review") or "").strip()
+    if not text:
+        return jsonify({"error": "Provide 'review' text"}), 400
 
-    # 1️⃣ Preprocess
-    preprocessed = requests.post(PREPROCESS_URL, json={"text": text}).json()
-
-    # 2️⃣ Run Sentiment Analysis
-    result = requests.post(SENTIMENT_URL, json=preprocessed).json()
-
-    return jsonify(result)
+    pol = polarity_scores(text)
+    rating = stars(text)
+    return jsonify({"review": text, "polarity": pol, "stars": rating}), 200
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=80)
+    app.run(host="0.0.0.0", port=5002)
