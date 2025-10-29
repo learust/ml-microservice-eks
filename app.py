@@ -1,21 +1,25 @@
 from flask import Flask, request, jsonify
-from sentiment import tokenizer, model  # imports directly from your script
-from scipy.special import softmax
-import torch
-from sentiment import polarity_scores
+from flask_cors import CORS
+from price import trade
 
 app = Flask(__name__)
+CORS(app)
 
-@app.route('/predict', methods=['POST'])
-def predict():
-    # Get text from user request
-    data = request.get_json()
-    example = data.get("text", "")
-    
-    # Use imported tokenizer and model directly
-    polarity_scores(data)
+@app.get("/health")
+def health():
+    return jsonify({"status": "ok"}), 200
 
-    return jsonify(polarity_scores)
+@app.post("/api/trade")
+def trade_endpoint():
+    data = request.get_json(silent=True) or {}
+    try:
+        year = int(data.get("year"))
+        mileage = float(data.get("mileage"))
+    except (TypeError, ValueError):
+        return jsonify({"error": "Provide numeric 'year' and 'mileage'"}), 400
+
+    value = trade(year, mileage)
+    return jsonify({"year": year, "mileage": mileage, "value": value}), 200
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5001, debug=True)
+    app.run(host="0.0.0.0", port=5001)
