@@ -7,12 +7,12 @@ spec:
     apiVersion: apps/v1
     kind: Deployment
     name: review-service
-  minReplicas: 2      # Start with 2 pods minimum
-  maxReplicas: 8      # Scale up to 8 pods maximum
+  minReplicas: 5      # Start with 5 pods minimum
+  maxReplicas: 25      # Scale up to 25 pods maximum
   metrics:
     - type: Resource
       resource:
         name: cpu
         target:
           type: Utilization
-          averageUtilization: 70  # Scale when CPU hits 70%
+          averageUtilization: 50  # Scale when CPU hits 50%
