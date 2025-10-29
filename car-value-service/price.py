@@ -5,12 +5,12 @@ from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler
 from sklearn.linear_model import LinearRegression
 
-# expects data/car-values.xlsx
-_DATA_PATH = os.path.join(os.path.dirname(__file__), "data", "car-values.xlsx")
+# expects data/Car_Value_Dataset.csv
+_DATA_PATH = os.path.join(os.path.dirname(__file__), "data", "Car_Value_Dataset.csv")
 if not os.path.exists(_DATA_PATH):
     raise FileNotFoundError(f"Training data not found at {_DATA_PATH}")
 
-df = pd.read_excel(_DATA_PATH)
+df = pd.read_csv(_DATA_PATH)
 df.columns = [c.strip().lower() for c in df.columns]
 
 year_col = next((c for c in df.columns if c in ("year", "yr")), None)
