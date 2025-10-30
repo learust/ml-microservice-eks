@@ -1,56 +1,39 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: car-value-service
+  name: review-service
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
-      app: car-value-service
+      app: review-service
   template:
     metadata:
       labels:
-        app: car-value-service
+        app: review-service
     spec:
       containers:
-      - name: car-value-service
-        image: <AWS_ACCOUNT_ID>.dkr.ecr.us-east-1.amazonaws.com/car-value-service:latest
+      - name: review-service
+        image: 469511944493.dkr.ecr.us-east-1.amazonaws.com/review-service:latest
         ports:
-        - containerPort: 5001
+        - containerPort: 5002
         resources:
           requests:
-            memory: "512Mi"
-            cpu: "250m"
+            memory: "128Mi"
+            cpu: "100m"
           limits:
-            memory: "1Gi"
-            cpu: "500m"
-        readinessProbe:
-          httpGet:
-            path: /health
-            port: 5001
-          initialDelaySeconds: 5
-          periodSeconds: 5
-        livenessProbe:
-          httpGet:
-            path: /health
-            port: 5001
-          initialDelaySeconds: 15
-          periodSeconds: 10
-        securityContext:
-          runAsUser: 1000
-          runAsGroup: 1000
-          runAsNonRoot: true
-          allowPrivilegeEscalation: false
+            memory: "256Mi"
+            cpu: "300m"
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: car-value-service
+  name: review-service
 spec:
   selector:
-    app: car-value-service
+    app: review-service
   ports:
   - protocol: TCP
-    port: 5001
-    targetPort: 5001
+    port: 5002
+    targetPort: 5002
   type: ClusterIP
