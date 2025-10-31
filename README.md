@@ -150,7 +150,3 @@ Scales cluster back to operational state:
 - **Orchestration:** Kubernetes (EKS)
 - **Scaling:** Horizontal Pod Autoscaler
 - **Web Server:** Gunicorn
-
-## License
-
-MIT
