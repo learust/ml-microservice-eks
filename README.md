@@ -24,7 +24,7 @@ This project consists of three microservices:
 
 ## Services
 
-### API Gateway
+### API Gateway:
 - **Port:** 8080
 - **Endpoints:**
   - `GET /health` - Health check
@@ -32,13 +32,13 @@ This project consists of three microservices:
   - `POST /api/car-value` - Car value estimation only
   - `POST /api/review-sentiment` - Sentiment analysis only
 
-### Car Value Service
+### Car Value Service:
 - **Port:** 5001
 - **Technology:** scikit-learn Linear Regression
 - **Endpoint:** `POST /api/trade`
 - **Input:** `{"year": 2018, "mileage": 45000}`
 
-### Review Service
+### Review Service:
 - **Port:** 5002
 - **Technology:** Keyword-based sentiment analysis
 - **Endpoint:** `POST /api/review`
@@ -141,21 +141,6 @@ Scales cluster back to operational state:
 ├── freeze.sh            # Scale down cluster
 └── thaw.sh              # Scale up cluster
 ```
-
-## Requirements
-
-- Docker & Docker Compose
-- Kubernetes cluster (EKS)
-- kubectl CLI
-- AWS CLI (for EKS operations)
-
-## Performance
-
-Test results show the system can handle:
-- **500 RPS:** ~68.6 requests/sec with avg latency 0.72s
-- **1500 RPS:** ~13,328 requests/sec with avg latency 0.12s
-
-See `test_500rps.txt` and `test_1500rps.txt` for detailed metrics.
 
 ## Technologies
 
