@@ -1,0 +1,30 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: loadgen
+spec:
+  restartPolicy: Never
+  containers:
+  - name: loadgen
+    image: alpine:latest
+    command: ["/bin/sh", "-c"]
+    args:
+      - |
+        apk add --no-cache curl wget;
+        wget https://hey-release.s3.us-east-2.amazonaws.com/hey_linux_amd64;
+        chmod +x hey_linux_amd64;
+        mv hey_linux_amd64 /usr/local/bin/hey;
+
+        echo "Starting load test...";
+        hey -z 30s -c 2000 \
+          -m POST \
+          -H "Content-Type: application/json" \
+          -d '{\"year\":2018,\"mileage\":45000,\"review\":\"Great car!\"}' \
+          http://api-gateway/api/car-analysis;
+
+        echo "Done";
+        sleep 60;
+
+# To execute: kubectl apply -f loadgen.yaml
+# To see results: kubectl logs -f loadgen
+# Use to delete after running load generator: kubectl delete -f loadgen.yaml
