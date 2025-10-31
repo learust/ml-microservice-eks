@@ -17,7 +17,7 @@ year_col = next((c for c in df.columns if c in ("year", "yr")), None)
 mileage_col = next((c for c in df.columns if c in ("mileage", "miles", "odometer")), None)
 price_col = next((c for c in df.columns if c in ("price", "value", "target")), None)
 if not (year_col and mileage_col and price_col):
-    raise ValueError("Expected columns like year/yr, mileage/miles, and price/value in car-values.xlsx")
+    raise ValueError("Expected columns like year/yr, mileage/miles, and price/value in Car_Value_Dataset.csv")
 
 df = df[[year_col, mileage_col, price_col]].dropna()
 
